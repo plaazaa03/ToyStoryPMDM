@@ -1,7 +1,9 @@
 package com.example.walle3enraya;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private int robotImgPath = R.mipmap.robot;
     private boolean humanTurn;
     private int turnCount;
+    private boolean machineMoveInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,32 @@ public class MainActivity extends AppCompatActivity {
         if (easyRadioButton.isChecked()) {
             // Modo fácil: jugar de forma aleatoria
             realizarJugadaAleatoria();
+            // Establecer a false después de la jugada
+            machineMoveInProgress = false;
+            // Cambiar el turno después de la jugada de la máquina
+            cambiarTurno();
         } else if (advancedRadioButton.isChecked()) {
-            // Modo avanzado: jugar de forma estratégica
-            realizarJugadaEstrategica();
+            // Modo avanzado: jugar de forma estratégica con retraso
+            new Handler().postDelayed(() -> {
+                realizarJugadaEstrategica();
+                // Establecer a false después de la jugada
+                machineMoveInProgress = false;
+                // Cambiar el turno después de la jugada de la máquina
+                cambiarTurno();
+            }, 2000); // Retraso de 2000 milisegundos (2 segundos)
+        }
+    }
+
+    private void cambiarTurno() {
+        // Cambiar el turno después de la jugada del humano o la CPU
+        humanTurn = !humanTurn;
+        turnCount++;
+        if (humanTurn) {
+            turnImageView.setImageResource(humanImgPath);
+            turnTextView.setText("Turno: Jugador");
+        } else {
+            turnImageView.setImageResource(robotImgPath);
+            turnTextView.setText("Turno: CPU");
         }
     }
 
@@ -178,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     public void onImageButtonClicked(int row, int col) {
         // Square already selected
         if (panel[row][col].getDrawable() != null) {
@@ -199,33 +226,101 @@ public class MainActivity extends AppCompatActivity {
         } else if (turnCount == 9) {
             Toast.makeText(MainActivity.this, "Empate", Toast.LENGTH_SHORT).show();
         } else { // CPU turn
-            realizarJugadaMaquina(); // Realizar la jugada de la máquina
-
-            // Verificar si hay un ganador o empate después de la jugada de la CPU
-            if (checkForWin()) {
-                Toast.makeText(MainActivity.this, "¡Gana la CPU!", Toast.LENGTH_SHORT).show();
-            } else if (turnCount == 9) {
-                Toast.makeText(MainActivity.this, "Empate", Toast.LENGTH_SHORT).show();
+            if (!machineMoveInProgress) { // Asegurarse de que la máquina no realice movimientos consecutivos
+                machineMoveInProgress = true;
+                realizarJugadaMaquina(); // Realizar la jugada de la máquina
             }
         }
-
-        // Cambiar el turno después de la jugada del humano o la CPU
-        humanTurn = true;
-        turnCount++;
-        turnImageView.setImageResource(humanImgPath);
-        turnTextView.setText("Turno: Jugador");
     }
 
     private void realizarJugadaEstrategica() {
-        // Primero, verifica si hay una oportunidad para ganar en la próxima jugada
         if (buscarOportunidadGanar()) {
-            // Realiza la jugada estratégica para ganar
+            // Si hay una oportunidad de ganar, aprovecharla
         } else if (bloquearOponente()) {
-            // Si no hay oportunidad para ganar, intenta bloquear al oponente
+            // Si el oponente tiene una oportunidad de ganar, bloquearla
         } else {
-            // Si no hay oportunidades para ganar ni bloquear, realiza una jugada aleatoria
-            realizarJugadaAleatoria();
+            // Si no hay oportunidades de ganar ni bloquear, jugar de forma estratégica
+            realizarJugadaEstrategicaPersonalizada();
         }
+    }
+
+
+    private void realizarJugadaEstrategicaPersonalizada() {
+        // Agrega lógica personalizada para situaciones específicas
+        // Aquí puedes ajustar la estrategia según diferentes condiciones del juego
+
+        // Ejemplo: Priorizar el centro si está disponible
+        if (panel[1][1].getDrawable() == null) {
+            realizarJugadaEnBoton(panel[1][1]);
+            return;
+        }
+
+        // Ejemplo: Priorizar las esquinas si el centro está ocupado
+        ArrayList<ImageButton> esquinasDisponibles = obtenerEsquinasDisponibles();
+        if (!esquinasDisponibles.isEmpty()) {
+            Random random = new Random();
+            int indiceAleatorio = random.nextInt(esquinasDisponibles.size());
+            ImageButton esquinaSeleccionada = esquinasDisponibles.get(indiceAleatorio);
+            realizarJugadaEnBoton(esquinaSeleccionada);
+            return;
+        }
+
+        // Ejemplo: Jugar de forma aleatoria si no hay una estrategia específica
+        realizarJugadaAleatoria();
+    }
+
+    private boolean bloquearOponente() {
+        // Verificar filas para bloquear
+        for (int i = 0; i < 3; i++) {
+            if (verificarFila(i, panel, true)) {
+                return false;
+            }
+        }
+
+        // Verificar columnas para bloquear
+        for (int i = 0; i < 3; i++) {
+            if (verificarColumna(i, panel, true)) {
+                return false;
+            }
+        }
+
+        // Verificar diagonal principal para bloquear
+        if (verificarDiagonalPrincipal(panel, true)) {
+            return false;
+        }
+
+        // Verificar diagonal secundaria para bloquear
+        if (verificarDiagonalSecundaria(panel, true)) {
+            return false;
+        }
+
+        // Si no hay una fila, columna o diagonal para bloquear, realiza una jugada aleatoria
+        realizarJugadaAleatoria();
+        return false;
+    }
+
+
+    private ArrayList<ImageButton> obtenerEsquinasDisponibles() {
+        ArrayList<ImageButton> esquinasDisponibles = new ArrayList<>();
+        if (panel[0][0].getDrawable() == null) {
+            esquinasDisponibles.add(panel[0][0]);
+        }
+        if (panel[0][2].getDrawable() == null) {
+            esquinasDisponibles.add(panel[0][2]);
+        }
+        if (panel[2][0].getDrawable() == null) {
+            esquinasDisponibles.add(panel[2][0]);
+        }
+        if (panel[2][2].getDrawable() == null) {
+            esquinasDisponibles.add(panel[2][2]);
+        }
+        return esquinasDisponibles;
+    }
+
+    private void realizarJugadaEnBoton(ImageButton boton) {
+        // Realizar la jugada en el botón seleccionado
+        boton.setImageResource(robotImgPath);
+        boton.setEnabled(false); // Deshabilitar el botón
     }
 
     private boolean buscarOportunidadGanar() {
@@ -251,82 +346,73 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean bloquearOponente() {
-        // Verificar filas
-        for (int i = 0; i < 3; i++) {
-            if (verificarFila(i, panel, true)) {
-                return true;
-            }
-        }
-
-        // Verificar columnas
-        for (int i = 0; i < 3; i++) {
-            if (verificarColumna(i, panel, true)) {
-                return true;
-            }
-        }
-
-        // Verificar diagonales
-        if (verificarDiagonalPrincipal(panel, true) || verificarDiagonalSecundaria(panel, true)) {
-            return true;
-        }
-
-        return false;
-    }
-
     private boolean verificarFila(int fila, ImageButton[][] panel) {
-        Drawable drawable0 = panel[fila][0].getDrawable();
-        Drawable drawable1 = panel[fila][1].getDrawable();
-        Drawable drawable2 = panel[fila][2].getDrawable();
+        Drawable[] drawables = new Drawable[3];
 
-        return drawable0 != null &&
-                drawable0.getConstantState() != null && drawable1 != null &&
-                drawable1.getConstantState() != null && drawable2 != null &&
-                drawable2.getConstantState() != null &&
-                drawable0.getConstantState().equals(drawable1.getConstantState()) &&
-                drawable1.getConstantState().equals(drawable2.getConstantState());
+        for (int i = 0; i < 3; i++) {
+            drawables[i] = panel[fila][i].getDrawable();
+
+            if (drawables[i] == null || drawables[i].getConstantState() == null) {
+                return false;
+            }
+        }
+
+        return drawables[0].getConstantState().equals(drawables[1].getConstantState()) &&
+                drawables[1].getConstantState().equals(drawables[2].getConstantState());
     }
+
 
 
     private boolean verificarColumna(int columna, ImageButton[][] panel) {
-        Drawable drawable0 = panel[0][columna].getDrawable();
-        Drawable drawable1 = panel[1][columna].getDrawable();
-        Drawable drawable2 = panel[2][columna].getDrawable();
+        Drawable[] drawables = new Drawable[3];
 
-        return drawable0 != null &&
-                drawable0.getConstantState() != null && drawable1 != null &&
-                drawable1.getConstantState() != null && drawable2 != null &&
-                drawable2.getConstantState() != null &&
-                drawable0.getConstantState().equals(drawable1.getConstantState()) &&
-                drawable1.getConstantState().equals(drawable2.getConstantState());
+        for (int i = 0; i < 3; i++) {
+            drawables[i] = panel[i][columna].getDrawable();
+
+            if (drawables[i] == null || drawables[i].getConstantState() == null) {
+                return false;
+            }
+        }
+
+        return drawables[0].getConstantState().equals(drawables[1].getConstantState()) &&
+                drawables[1].getConstantState().equals(drawables[2].getConstantState());
     }
+
 
     private boolean verificarDiagonalPrincipal(ImageButton[][] panel) {
-        Drawable drawable00 = panel[0][0].getDrawable();
-        Drawable drawable11 = panel[1][1].getDrawable();
-        Drawable drawable22 = panel[2][2].getDrawable();
+        Drawable[] drawables = new Drawable[3];
 
-        return drawable00 != null &&
-                drawable00.getConstantState() != null && drawable11 != null &&
-                drawable11.getConstantState() != null && drawable22 != null &&
-                drawable22.getConstantState() != null &&
-                drawable00.getConstantState().equals(drawable11.getConstantState()) &&
-                drawable11.getConstantState().equals(drawable22.getConstantState());
+        for (int i = 0; i < 3; i++) {
+            drawables[i] = panel[i][i].getDrawable();
+
+            if (drawables[i] == null || drawables[i].getConstantState() == null) {
+                return false;
+            }
+        }
+
+        return drawables[0].getConstantState().equals(drawables[1].getConstantState()) &&
+                drawables[1].getConstantState().equals(drawables[2].getConstantState());
     }
+
 
 
     private boolean verificarDiagonalSecundaria(ImageButton[][] panel) {
-        Drawable drawable02 = panel[0][2].getDrawable();
-        Drawable drawable11 = panel[1][1].getDrawable();
-        Drawable drawable20 = panel[2][0].getDrawable();
+        Drawable[] drawables = new Drawable[3];
 
-        return drawable02 != null &&
-                drawable02.getConstantState() != null && drawable11 != null &&
-                drawable11.getConstantState() != null && drawable20 != null &&
-                drawable20.getConstantState() != null &&
-                drawable02.getConstantState().equals(drawable11.getConstantState()) &&
-                drawable11.getConstantState().equals(drawable20.getConstantState());
+        drawables[0] = panel[0][2].getDrawable();
+        drawables[1] = panel[1][1].getDrawable();
+        drawables[2] = panel[2][0].getDrawable();
+
+        for (Drawable drawable : drawables) {
+            if (drawable == null || drawable.getConstantState() == null) {
+                return false;
+            }
+        }
+
+        return drawables[0].getConstantState().equals(drawables[1].getConstantState()) &&
+                drawables[1].getConstantState().equals(drawables[2].getConstantState());
     }
+
 
 
     // Sobrecarga de métodos para la versión que bloquea al oponente
@@ -392,12 +478,28 @@ public class MainActivity extends AppCompatActivity {
             int indiceAleatorio = random.nextInt(botonesDisponibles.size());
             ImageButton botonSeleccionado = botonesDisponibles.get(indiceAleatorio);
 
-            // Realizar la jugada en el botón seleccionado
-            botonSeleccionado.setImageResource(robotImgPath);
-            botonSeleccionado.setEnabled(false); // Deshabilitar el botón
+            // Realizar la jugada en el botón seleccionado después de 2 segundos
+            new Handler().postDelayed(() -> {
+                botonSeleccionado.setImageResource(robotImgPath);
+                botonSeleccionado.setEnabled(false); // Deshabilitar el botón
+                // Eliminar el botón de la lista de botones disponibles
+                botonesDisponibles.remove(botonSeleccionado);
 
-            // Eliminar el botón de la lista de botones disponibles
-            botonesDisponibles.remove(botonSeleccionado);
+                // Verificar si hay un ganador o empate después de la jugada de la CPU
+                if (checkForWin()) {
+                    Toast.makeText(MainActivity.this, "¡Gana la CPU!", Toast.LENGTH_SHORT).show();
+                } else if (turnCount == 9) {
+                    Toast.makeText(MainActivity.this, "Empate", Toast.LENGTH_SHORT).show();
+                }
+
+                // Cambiar el turno después de la jugada de la CPU
+                humanTurn = true;
+                turnCount++;
+                turnImageView.setImageResource(humanImgPath);
+                turnTextView.setText("Turno: Jugador");
+            }, 2000); // Retraso de 2000 milisegundos (2 segundos)
+        }else {
+            machineMoveInProgress = false;
         }
     }
 
