@@ -588,3 +588,4 @@ public class MainActivity extends AppCompatActivity {
         Sounds.stopBackgroundMusic();
     }
 }
+
