@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Toy Story App</string>
+    <string name="advanced_mode">Mode avancé</string>
+    <string name="start">Commencer</string>
+    <string name="stop">Décrochage</string>
+    <string name="restart">Rédemarrage</string>
+    <string name="modo_facil">Mode Facile</string>
+    <string name="turno_cpu">"DÉCALAGE DU CPU "</string>
+    <string name="turno_jugador">"TOUR DU JOUEUR "</string>
+    <string name="casilla_ya_seleccionada">Case déjà sélectionnée</string>
+</resources>

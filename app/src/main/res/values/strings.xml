@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Toy Story App</string>
+    <string name="advanced_mode">Modo Avanzado</string>
+    <string name="start">EMPEZAR</string>
+    <string name="stop">PARAR</string>
+    <string name="restart">REINICIAR</string>
+    <string name="modo_facil">Modo Facil</string>
+    <string name="splash_image" translatable="false">Splash Image</string>
+    <string name="turno_cpu">Turno: CPU</string>
+    <string name="turno_jugador">Turno: Jugador</string>
+    <string name="casilla_ya_seleccionada">Casilla ya seleccionada</string>
 </resources>

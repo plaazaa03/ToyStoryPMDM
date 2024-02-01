@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Sounds.playBackgroundMusic(this);
 
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             new Handler().postDelayed(() -> {
                 realizarJugadaEstrategica();
                 // Establecer a false después de la jugada
-                machineMoveInProgress = false;
+                machineMoveInProgress = true;
                 // Cambiar el turno después de la jugada de la máquina
                 cambiarTurno();
             }, 2000); // Retraso de 2000 milisegundos (2 segundos)
@@ -70,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
         turnCount++;
         if (humanTurn) {
             turnImageView.setImageResource(humanImgPath);
-            turnTextView.setText("Turno: Jugador");
+            turnTextView.setText(R.string.turno_jugador);
         } else {
             turnImageView.setImageResource(robotImgPath);
-            turnTextView.setText("Turno: CPU");
+            turnTextView.setText(R.string.turno_cpu);
         }
     }
 
@@ -154,14 +156,14 @@ public class MainActivity extends AppCompatActivity {
         toggleButton.setOnClickListener(v -> {
             if(toggleButton.isChecked())
             {
-                Toast.makeText(MainActivity.this, "The game is running...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "El juego ha comenzado...", Toast.LENGTH_SHORT).show();
                 startGame();
 
                 turnImageView.setImageResource(humanImgPath);
             }
             else
             {
-                Toast.makeText(MainActivity.this, "The game is stopped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "El juego ha terminado", Toast.LENGTH_SHORT).show();
                 stopGame();
 
                 turnImageView.setImageResource(robotImgPath);
@@ -204,11 +206,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+
     public void onImageButtonClicked(int row, int col) {
         // Square already selected
         if (panel[row][col].getDrawable() != null) {
-            Toast.makeText(MainActivity.this, "Casilla ya seleccionada", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.casilla_ya_seleccionada, Toast.LENGTH_SHORT).show();
             return;
         }
         // Human turn

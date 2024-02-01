@@ -102,20 +102,19 @@
 
     <View
             android:id="@+id/divider"
-            android:layout_width="409dp"
+            android:layout_width="wrap_content"
             android:layout_height="3dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="40dp"
             android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gridLayout"
-            app:layout_constraintHorizontal_bias="1.0"
 
-    />
+            app:layout_constraintHorizontal_bias="1.0"/>
     <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="36dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +129,7 @@
                     android:id="@+id/easyRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Easy Mode"
+                    android:text="@string/modo_facil"
                     android:textStyle="bold"
                     android:textColor="@color/black"
             />
@@ -140,7 +139,7 @@
                     android:id="@+id/advancedRadioButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Advanced Mode"
+                    android:text="@string/advanced_mode"
                     android:textStyle="bold"
                     android:textColor="@color/black"
             />
@@ -156,8 +155,8 @@
                     android:id="@+id/toggleButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textOff="START"
-                    android:textOn="STOP"/>
+                    android:textOff="@string/start"
+                    android:textOn="@string/stop"/>
 
             <ImageView
                     android:id="@+id/turnImageView"
@@ -179,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RESTART"/>
+                android:text="@string/restart"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
