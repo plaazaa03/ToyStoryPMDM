@@ -9,4 +9,10 @@
     <string name="turno_cpu">CPU TURN</string>
     <string name="turno_jugador">PLAYER TURN</string>
     <string name="casilla_ya_seleccionada">Box already selected</string>
+    <string name="el_juego_ha_comenzado">The game has started</string>
+    <string name="el_juego_ha_terminado">The game is hover</string>
+    <string name="est_s_seguro_de_que_quieres_reinciar_el_juego">Are you sure you want to restart the game?</string>
+    <string name="gana_el_jugador">" ¡Player wins!"</string>
+    <string name="empate">Tie</string>
+    <string name="gana_la_cpu">¡CPU Wins!</string>
 </resources>

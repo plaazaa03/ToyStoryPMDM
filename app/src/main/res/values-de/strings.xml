@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Toy Story App</string>
+    <string name="advanced_mode">" Fortgeschrittener Modus"</string>
+    <string name="start">Beginnen</string>
+    <string name="stop">Stall</string>
+    <string name="restart">"Neu starten "</string>
+    <string name="modo_facil">Einfacher Modus</string>
+    <string name="turno_cpu">"CPU-Verschiebung "</string>
+    <string name="turno_jugador">"Der Spieler ist an der Reihe "</string>
+    <string name="casilla_ya_seleccionada">" Feld bereits ausgewählt"</string>
+    <string name="el_juego_ha_comenzado">"Das Spiel hat begonnen "</string>
+    <string name="el_juego_ha_terminado">"Das Spiel ist vorbei "</string>
+    <string name="est_s_seguro_de_que_quieres_reinciar_el_juego">"Sind Sie sicher, dass Sie neu starten möchten? "</string>
+    <string name="gana_el_jugador">"Der Spieler gewinnt "</string>
+    <string name="empate">binden</string>
+    <string name="gana_la_cpu">"Gewinne die CPU "</string>
+</resources>

@@ -156,14 +156,14 @@ public class MainActivity extends AppCompatActivity {
         toggleButton.setOnClickListener(v -> {
             if(toggleButton.isChecked())
             {
-                Toast.makeText(MainActivity.this, "El juego ha comenzado...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.el_juego_ha_comenzado, Toast.LENGTH_SHORT).show();
                 startGame();
 
                 turnImageView.setImageResource(humanImgPath);
             }
             else
             {
-                Toast.makeText(MainActivity.this, "El juego ha terminado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.el_juego_ha_terminado, Toast.LENGTH_SHORT).show();
                 stopGame();
 
                 turnImageView.setImageResource(robotImgPath);
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         // Listener for the restart button
         restartBtn.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("¿Estás seguro de que quieres reinciar el juego?").setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
+            builder.setMessage(R.string.est_s_seguro_de_que_quieres_reinciar_el_juego).setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // Accept the restart
@@ -224,9 +224,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Verificar si hay un ganador o empate después de la jugada del humano
         if (checkForWin()) {
-            Toast.makeText(MainActivity.this, "¡Gana el Jugador!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.gana_el_jugador, Toast.LENGTH_SHORT).show();
         } else if (turnCount == 9) {
-            Toast.makeText(MainActivity.this, "Empate", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.empate, Toast.LENGTH_SHORT).show();
         } else { // CPU turn
             if (!machineMoveInProgress) { // Asegurarse de que la máquina no realice movimientos consecutivos
                 machineMoveInProgress = true;
@@ -489,7 +489,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Verificar si hay un ganador o empate después de la jugada de la CPU
                 if (checkForWin()) {
-                    Toast.makeText(MainActivity.this, "¡Gana la CPU!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.gana_la_cpu, Toast.LENGTH_SHORT).show();
                 } else if (turnCount == 9) {
                     Toast.makeText(MainActivity.this, "Empate", Toast.LENGTH_SHORT).show();
                 }
@@ -498,7 +498,7 @@ public class MainActivity extends AppCompatActivity {
                 humanTurn = true;
                 turnCount++;
                 turnImageView.setImageResource(humanImgPath);
-                turnTextView.setText("Turno: Jugador");
+                turnTextView.setText("");
             }, 2000); // Retraso de 2000 milisegundos (2 segundos)
         }else {
             machineMoveInProgress = false;

@@ -9,4 +9,10 @@
     <string name="turno_cpu">Turno: CPU</string>
     <string name="turno_jugador">Turno: Jugador</string>
     <string name="casilla_ya_seleccionada">Casilla ya seleccionada</string>
+    <string name="el_juego_ha_comenzado">El juego ha comenzado...</string>
+    <string name="el_juego_ha_terminado">El juego ha terminado</string>
+    <string name="est_s_seguro_de_que_quieres_reinciar_el_juego">¿Estás seguro de que quieres reinciar el juego?</string>
+    <string name="gana_el_jugador">¡Gana el Jugador!</string>
+    <string name="empate">Empate</string>
+    <string name="gana_la_cpu">¡Gana la CPU!</string>
 </resources>

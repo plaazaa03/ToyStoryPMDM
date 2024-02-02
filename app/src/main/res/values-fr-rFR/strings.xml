@@ -9,4 +9,10 @@
     <string name="turno_cpu">"DÉCALAGE DU CPU "</string>
     <string name="turno_jugador">"TOUR DU JOUEUR "</string>
     <string name="casilla_ya_seleccionada">Case déjà sélectionnée</string>
+    <string name="el_juego_ha_comenzado">"Le jeu a commencé "</string>
+    <string name="el_juego_ha_terminado">" Le jeu est terminé"</string>
+    <string name="est_s_seguro_de_que_quieres_reinciar_el_juego">" Etes-vous sûr de vouloir redémarrer ?"</string>
+    <string name="gana_el_jugador">¡Le joueur gagne!</string>
+    <string name="empate">"Cravate "</string>
+    <string name="gana_la_cpu">¡Le processeur gagne!</string>
 </resources>
